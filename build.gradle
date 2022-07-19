@@ -24,6 +24,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.14.3'
     implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
     compile 'commons-codec:commons-codec:1.10'
+    implementation 'org.apache.opennlp:opennlp-tools:2.0.0'
 }
 test {
     useJUnitPlatform()

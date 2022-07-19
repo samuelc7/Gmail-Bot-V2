@@ -8,7 +8,7 @@ import java.text.ParseException;
 
 @RestController
 public class Main {
-    public static void main(String[] args) throws GeneralSecurityException, IOException, ParseException, MessagingException {
+    public static void main(String[] args) throws GeneralSecurityException, IOException, ParseException, MessagingException, InterruptedException {
         HelloWorld hw = new HelloWorld();
         hw.display();
         return;

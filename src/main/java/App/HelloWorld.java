@@ -24,7 +24,7 @@ public class HelloWorld {
     public GmailAccess gmailAccess;
 
     @PostMapping(value = "/")
-    public String display() throws GeneralSecurityException, IOException, ParseException, MessagingException {
+    public String display() throws GeneralSecurityException, IOException, ParseException, MessagingException, InterruptedException {
 
         gmailAccess = new GmailAccess("Test");
         List<Document> docs = gmailAccess.getMessages();
