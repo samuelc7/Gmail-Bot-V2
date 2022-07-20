@@ -1,8 +1,10 @@
 App/Application.java
  App.Application
-Main.java
- Main
+App/BotModel.java
+ App.BotModel
 Gmail/GmailAccess.java
  Gmail.GmailAccess
+Main.java
+ Main
 App/HelloWorld.java
  App.HelloWorld

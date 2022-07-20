@@ -27,64 +27,35 @@ public class HelloWorld {
     public String display() throws GeneralSecurityException, IOException, ParseException, MessagingException, InterruptedException {
 
         gmailAccess = new GmailAccess("Test");
-        List<Document> docs = gmailAccess.getMessages();
+        String inputText = gmailAccess.getMessage();
 
-        if (docs == null || docs.isEmpty()) {
+        if (inputText.equals("") || inputText.isEmpty()) {
             System.out.println("No messages retrieved.");
             return "no messages retrieved";
         }
-        this.respond(docs);
+        this.respond(inputText);
         return "thanks";
     }
 
-    private void respond(List<Document> docs) throws MessagingException, IOException {
-        boolean introMessage = false;
-        String outMessage = "";
+    private void respond(String inputText) throws MessagingException, IOException {
+        // Create model
+        BotModel model = new BotModel(inputText);
 
-        List<String> introWords = new ArrayList<>
-                (Arrays.asList("good", "just swell", "fabulous", "wonderful"));
+        // Run model and get out message
+        model.runModel();
 
-        List<String> messages = new ArrayList<>(Arrays.asList(
-                "This is a message", "This is message 2", "This is message 3"));
+        String outText = model.getOutMessage();
+        // Create the email content in some convenient way and encode it as a base64url string
+        MimeMessage email = this.createEmail(
+                "cummings.samuel007@gmail.com",
+                "cummings.samuel007@gmail.com",
+                "SAMSBOT",
+                outText);
+        com.google.api.services.gmail.model.Message message = this.createMessageWithEmail(email);
+        message = gmailAccess.service.users().messages().send("me", message).execute();
+        System.out.println("message '" + outText + "' sent to " + "cummings.samuel007@gmail.com");
 
-        String outro = "\n\nI hope you enjoyed his message. Respond to me at anytime and I will get back to you within 10 minutes\n" +
-                "Thanks for interacting with SAMSBOT (Sam's Automated Messaging System Robot)\n" +
-                "We will talk to you soon.\n" +
-                "Have a lovely day,\n\n" +
-                "SAMSBOT";
-
-        List<String> introKeyWords = new ArrayList<>(
-                Arrays.asList("hi","hey", "hello", "how are you", "how's it going"));
-
-        // Check to see if greeting is in the message
-        for (Document doc : docs) {
-            String inMessage = doc.body().text().toLowerCase();
-            for (String kw : introKeyWords) {
-                if (inMessage.contains(kw)) {
-                    introMessage = true;
-                }
-            }
-            // build message
-            ThreadLocalRandom tlr = ThreadLocalRandom.current();
-            int randomNum1 = tlr.nextInt(0, introWords.size());
-            int randomNum2 = tlr.nextInt(0, messages.size());
-
-            outMessage += "Hello Test, I hope you are doing " + introWords.get(randomNum1) +
-                    "\nHere is a message for you:\n\n" +
-                    messages.get(randomNum2) + outro;
-
-            // Create the email content in some convenient way and encode it as a base64url string
-            MimeMessage email = this.createEmail(
-                    "cummings.samuel007@gmail.com",
-                    "cummings.samuel007@gmail.com",
-                    "SAMSBOT",
-                    outMessage);
-            com.google.api.services.gmail.model.Message message = this.createMessageWithEmail(email);
-            message = gmailAccess.service.users().messages().send("me", message).execute();
-            System.out.println("message sent");
-        }
         return;
-
     }
     public static MimeMessage createEmail(String to, String from, String subject, String bodyText)
                                 throws MessagingException {
