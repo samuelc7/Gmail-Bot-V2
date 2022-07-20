@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class BotModel {
     private String inputText;
     private String outMessage;
-    private static Map<String, String> questionAnswer = new HashMap<>();
+    static Map<String, String> questionAnswer = new HashMap<>();
 
     public BotModel(String in) {
         this.inputText = in;
@@ -51,7 +51,6 @@ public class BotModel {
         String[] sentences = breakSentences(this.inputText);
 
         String answer = "";
-        boolean conversationComplete = false;
 
         // Loop through sentences.
         for (String sentence : sentences) {
@@ -84,7 +83,7 @@ public class BotModel {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private static DoccatModel trainCategorizerModel() throws FileNotFoundException, IOException {
+    static DoccatModel trainCategorizerModel() throws FileNotFoundException, IOException {
         // faq-categorizer.txt is a custom training data with categories as per our chat
         // requirements.
         InputStreamFactory inputStreamFactory = new MarkableFileInputStreamFactory(new File("src/main/java/App/faq-categorizer.txt"));
@@ -109,7 +108,7 @@ public class BotModel {
      * @return
      * @throws IOException
      */
-    private static String detectCategory(DoccatModel model, String[] finalTokens) throws IOException {
+    static String detectCategory(DoccatModel model, String[] finalTokens) throws IOException {
         // Initialize document categorizer tool
         DocumentCategorizerME myCategorizer = new DocumentCategorizerME(model);
 
@@ -129,7 +128,7 @@ public class BotModel {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private static String[] breakSentences(String data) throws FileNotFoundException, IOException {
+    static String[] breakSentences(String data) throws FileNotFoundException, IOException {
         // Better to read file once at start of program & store model in instance
         // variable. but keeping here for simplicity in understanding.
         InputStream inputSteam = new FileInputStream("src/main/java/App/en-sent.bin");
@@ -148,7 +147,7 @@ public class BotModel {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private static String[] tokenizeSentence(String sentence) throws FileNotFoundException, IOException {
+    static String[] tokenizeSentence(String sentence) throws FileNotFoundException, IOException {
         // Better to read file once at start of program & store model in instance
         // variable. but keeping here for simplicity in understanding.
         try (InputStream modelIn = new FileInputStream("src/main/java/App/en-token.bin")) {
@@ -171,7 +170,7 @@ public class BotModel {
      * @return
      * @throws IOException
      */
-    private static String[] detectPOSTags(String[] tokens) throws IOException {
+    static String[] detectPOSTags(String[] tokens) throws IOException {
         // Better to read file once at start of program & store model in instance
         // variable. but keeping here for simplicity in understanding.
         try (InputStream modelIn = new FileInputStream("src/main/java/App/en-pos-maxent.bin")) {
@@ -195,7 +194,7 @@ public class BotModel {
      * @throws InvalidFormatException
      * @throws IOException
      */
-    private static String[] lemmatizeTokens(String[] tokens, String[] posTags)
+    static String[] lemmatizeTokens(String[] tokens, String[] posTags)
             throws InvalidFormatException, IOException {
         // Better to read file once at start of program & store model in instance
         // variable. but keeping here for simplicity in understanding.

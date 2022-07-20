@@ -1,4 +1,4 @@
-import App.HelloWorld;
+import App.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
@@ -9,8 +9,8 @@ import java.text.ParseException;
 @RestController
 public class Main {
     public static void main(String[] args) throws GeneralSecurityException, IOException, ParseException, MessagingException, InterruptedException {
-        HelloWorld hw = new HelloWorld();
-        hw.display();
+        Controller controller = new Controller();
+//        controller.run();
         return;
     }
 }
